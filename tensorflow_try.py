@@ -144,7 +144,7 @@ for i in range(0, alldata_x.shape[0], 100):
         batch_x = xraw_transform(test_x[i:])
     batch_pred = sess.run(y, feed_dict = {x: batch_x, keep_prob: 1.0})
     for pred_i in batch_pred:
-        pred.append(pred_i)
+        pred.append(pred_i[0])
 
 record_info = []
 for info in alldata_x:
