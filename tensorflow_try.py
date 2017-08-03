@@ -28,13 +28,13 @@ test_y = data_y[250000:, :]
 
 import tensorflow as tf
 
-def weight_variable(shape):
+def weight_variable(shape, name_):
     initial = tf.truncated_normal(shape, stddev = 0.1)
-    return tf.Variable(initial)
+    return tf.Variable(initial, name = name_)
 
-def bias_variable(shape):
+def bias_variable(shape, name):
     initial = tf.constant(0.1, shape = shape)
-    return tf.Variable(initial)
+    return tf.Variable(initial, name = name_)
 
 L = [7017, 1]
 LAYERS = len(L) - 1
@@ -48,8 +48,8 @@ drop_keep_prob = 0.90
 W = list(range(LAYERS + 1))
 b = list(range(LAYERS + 1))
 for i in range(LAYERS):
-    W[i + 1] = weight_variable([L[i], L[i + 1]])
-    b[i + 1] = bias_variable([L[i + 1]])
+    W[i + 1] = weight_variable([L[i], L[i + 1]], 'W' + str(i + 1))
+    b[i + 1] = bias_variable([L[i + 1]], 'b' + str(i + 1))
 
 keep_prob = tf.placeholder("float")
 x = tf.placeholder(tf.float32, [None, 7017])
@@ -75,6 +75,8 @@ cost_function = rmse + regular_lambda * l2_loss
 train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost_function)
 init = tf.global_variables_initializer()
 
+saver = tf.train.Saver()
+
 print('Start training ...')
 print('Neural Network Layers:', L)
 print('Learning Rate:', learning_rate)
@@ -85,6 +87,9 @@ print('Dropout Keep Probability:', drop_keep_prob)
 
 sess = tf.Session()
 sess.run(init)
+
+saver.restore(sess, './linear_para.ckpt')
+print('Load tensorflow variables from file \'linear_para.ckpt\'.')
 
 def new_batch(batch_size):
     batch_idx = np.random.choice(range(train_x.shape[0]), size = batch_size, replace = False)
@@ -157,3 +162,5 @@ with open('ans.csv', 'w', encoding = 'utf-8') as f:
     f_csv = csv.writer(f)
     f_csv.writerow(headers)
     f_csv.writerows(rows)
+
+saver.save(sess, './linear_para.ckpt')
