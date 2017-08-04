@@ -11,3 +11,7 @@ Keyword: **Recommender System**
 > Smelly Cat, Smelly Cat,  
 > It's not your fault  
 > *by Phoebe Buffay*  
+
+## Algorithms
+
+- Linear Regression: RMSE 0.29011
