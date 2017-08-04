@@ -32,17 +32,17 @@ def weight_variable(shape, name_):
     initial = tf.truncated_normal(shape, stddev = 0.1)
     return tf.Variable(initial, name = name_)
 
-def bias_variable(shape, name):
+def bias_variable(shape, name_):
     initial = tf.constant(0.1, shape = shape)
     return tf.Variable(initial, name = name_)
 
 L = [7017, 1]
 LAYERS = len(L) - 1
 
-learning_rate = 1e-1
-iterations = 100000
+learning_rate = 1e-4
+iterations = 5000 # 200000
 batch_size = 1000
-regular_lambda = 0 #1e-5
+regular_lambda = 1e-5
 drop_keep_prob = 0.90
 
 W = list(range(LAYERS + 1))
@@ -113,10 +113,10 @@ mse_result = tf.reduce_mean(tf.square(y - y_))
 
 def test_rmse():
     mse_arr = []
-    for i in range(0, test_x.shape[0], 100):
-        if i + 100 <= test_x.shape[0]:
-            batch_x = xraw_transform(test_x[i : i + 100])
-            batch_y_ = test_y[i : i + 100]
+    for i in range(0, test_x.shape[0], 1000):
+        if i + 1000 <= test_x.shape[0]:
+            batch_x = xraw_transform(test_x[i : i + 1000])
+            batch_y_ = test_y[i : i + 1000]
         else:
             batch_x = xraw_transform(test_x[i:])
             batch_y_ = test_y[i:]
@@ -137,9 +137,9 @@ else:
 print('RMSE:', test_rmse())
 
 pred = []   
-for i in range(0, alldata_x.shape[0], 100):
-    if i + 100 <= alldata_x.shape[0]:
-        batch_x = xraw_transform(alldata_x[i : i + 100])
+for i in range(0, alldata_x.shape[0], 1000):
+    if i + 1000 <= alldata_x.shape[0]:
+        batch_x = xraw_transform(alldata_x[i : i + 1000])
     else:
         batch_x = xraw_transform(test_x[i:])
     batch_pred = sess.run(y, feed_dict = {x: batch_x, keep_prob: 1.0})
@@ -163,4 +163,4 @@ with open('ans.csv', 'w', encoding = 'utf-8') as f:
     f_csv.writerow(headers)
     f_csv.writerows(rows)
 
-saver.save(sess, './linear_para.ckpt')
+saver.save(sess, './linear_para_2.ckpt')
