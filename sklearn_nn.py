@@ -42,7 +42,8 @@ test_y = data_y[250000:]
 from sklearn.neural_network import MLPRegressor
 from sklearn import metrics
 
-regressor = MLPRegressor(hidden_layer_sizes = (500, 100), activation = 'tanh', solver = 'sgd', verbose = True)
+regressor = MLPRegressor(hidden_layer_sizes = (500, 100), activation = 'tanh', solver = 'lbfgs', tol = 5e-6, verbose = True)
+# regressor = MLPRegressor(hidden_layer_sizes = (1, ), activation = 'tanh', solver = 'lbfgs', verbose = True)
 
 print('Start training ...')
 regressor.fit(train_x, train_y)
@@ -51,7 +52,16 @@ print('Training done.')
 test_pred = regressor.predict(test_x)
 print("Rooted Mean Squared Error: %s\n" % (np.sqrt(metrics.mean_squared_error(test_y, test_pred))))
 
-pred = regressor.predict(tr_alldata_x)
+pred = []   
+for i in range(0, tr_alldata_x.shape[0], 100000):
+    print('Prediction:', i)
+    if i + 100000 <= tr_alldata_x.shape[0]:
+        batch_x = tr_alldata_x[i : i + 100000]
+    else:
+        batch_x = tr_alldata_x[i:]
+    batch_pred = regressor.predict(batch_x)
+    for pred_i in batch_pred:
+        pred.append(pred_i)
 
 record_info = []
 for info in alldata_x:

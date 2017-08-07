@@ -14,4 +14,5 @@ Keyword: **Recommender System**
 
 ## Algorithms
 
-- Linear Regression: RMSE 0.29000
+- Linear Regression: RMSE 0.27770
+- Neural Network [500, 100]: RMSE 0.27668

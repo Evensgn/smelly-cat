@@ -42,16 +42,16 @@ test_y = data_y[250000:]
 from sklearn.linear_model import LinearRegression
 from sklearn import metrics
 
-clf = LinearRegression()
+regressor = LinearRegression()
 
 print('Start training ...')
-clf.fit(train_x, train_y)
+regressor.fit(train_x, train_y)
 print('Training done.')
 
-test_pred = clf.predict(test_x)
+test_pred = regressor.predict(test_x)
 print("Rooted Mean Squared Error: %s\n" % (np.sqrt(metrics.mean_squared_error(test_y, test_pred))))
 
-pred = clf.predict(tr_alldata_x)
+pred = regressor.predict(tr_alldata_x)
 
 record_info = []
 for info in alldata_x:
