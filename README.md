@@ -2,7 +2,7 @@
 
 Zhou Fan (@Evensgn)
 
-Practice of machine learning, course work of PPCA 2017 (MS106), ACM Class, SJTU.  
+Practice of machine learning, course work of PPCA 2017, ACM Class, SJTU.  
 It's a regression task, and the topic is *cat*.  
 Keyword: **Recommender System**
 
